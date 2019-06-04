@@ -1,0 +1,20 @@
+body {
+    background-color: #b5b5b5;
+}
+.log-in-container {
+    width: 500px;
+    margin: 10% auto;
+    padding: 50px;
+    text-align: center;
+    color: #fff;
+    background-color: #5e646b;
+    border-radius: 10px;
+}
+
+.log-in-header {
+    margin-bottom: 40px; 
+}
+
+.sign-in-link {
+    color: #28a745;
+}
