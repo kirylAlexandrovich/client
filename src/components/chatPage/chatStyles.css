@@ -12,7 +12,7 @@
     width: 75%;
     height: 84vh;
     padding: 40px;
-    background-image: url(../../images/background_for_messanger.jpg);
+    /* background-image: url(../../images/background_for_messanger.jpg); */
     background-repeat: no-repeat;
     background-size: cover;
     border: 1px solid black;

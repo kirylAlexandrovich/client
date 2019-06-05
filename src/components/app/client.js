@@ -3,21 +3,34 @@
 // import Websocket from 'react-websocket';
 import openSocket from 'socket.io-client';
 
-const  socket = openSocket('http://localhost:8000');
+let socket;
 
-function client() {
-    socket.on('connection', () => {
-        console.log('connected');
-    });
-    socket.on('message', (data) => {
+const client = (nickname) => {
+  socket = openSocket('http://localhost:8000');
+  socket.on('connected', () => {
+    console.log('connected');
+    socket.emit('saveClient', nickname);
+  });
 
-        console.log(data);
-    });
-    console.log(socket);
-    socket.send('hello', socket.id);
+  socket.on('message', (data) => {
+    console.log('DATA', data);
+  });
+
+  socket.on('error', (err) => {
+    console.log(err);
+  });
+};
+
+function sendMessage(mess) {
+  socket.emit('message', mess);
 }
 
-export { client };
+function startSocket(nick) {
+  client(nick);
+}
+
+
+export { sendMessage, startSocket };
 
 // class WebClient extends React.Component {
 //     constructor() {
@@ -32,14 +45,14 @@ export { client };
 //                 return;
 //             }
 //         }
-        
+
 //         this.client.onopen = () => this.client.send('Text');
 
 //         this.client.onclose = () => {
 //             console.log('Connection closed')
 //         }
 //     }
-    
+
 //     // sendMessage(button, str) {
 //     //     button.addEvetListener('click', () => {
 //     //         this.client.send()
