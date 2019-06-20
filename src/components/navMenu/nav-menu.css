@@ -1,0 +1,9 @@
+.login-button-container {
+    position: absolute;
+    right: 20px;
+}
+
+.userEmail {
+    color: #fff;
+    padding-right: 10px; 
+}

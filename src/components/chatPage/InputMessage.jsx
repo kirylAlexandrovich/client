@@ -10,17 +10,17 @@ class InputMessage extends Component {
   }
 
   onSendMessage = () => {
-    const { message } = this.state;
+    const { message, email } = this.state;
     const time = new Date().toString().split(' ');
     const newTime = `${time[2]} ${time[1]} ${time[3]} ${time[4]}`;
     const myMessage = {
-      name: 'Name',
+      name: email,
       mess: message,
       time: newTime,
     };
-
-    sendMessage(message);
+    sendMessage(message, myMessage.time);
     this.setState({ message: '' });
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.sendMess(myMessage);
   }
 
@@ -47,6 +47,7 @@ class InputMessage extends Component {
             id="inputMessage"
             value={message}
             aria-describedby="button-addon2"
+            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
             onChange={this.onChangeMessage}
             onKeyPress={this.keyPress}
@@ -67,4 +68,7 @@ class InputMessage extends Component {
   }
 }
 
-export default connect(null, { sendMess })(InputMessage);
+export default connect(state => ({
+  connection: state.connectionState,
+  email: state.email,
+}), { sendMess })(InputMessage);

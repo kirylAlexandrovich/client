@@ -18,3 +18,12 @@ body {
 .sign-in-link {
     color: #28a745;
 }
+
+.google-button {
+    margin: 10px 15px;
+}
+
+.oauth-butt-container {
+    display: flex;
+    justify-content: center;
+}
