@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { sendMess } from '../redux/actions';
-import { sendMessage } from '../app/client';
+import { renderMess } from '../redux/actions';
+import sendMessage from '../app/client';
 
 class InputMessage extends Component {
   state = {
@@ -10,18 +10,22 @@ class InputMessage extends Component {
   }
 
   onSendMessage = () => {
-    const { message, email } = this.state;
+    const { message } = this.state;
+    const { email, roomName } = this.props;
     const time = new Date().toString().split(' ');
     const newTime = `${time[2]} ${time[1]} ${time[3]} ${time[4]}`;
+
     const myMessage = {
-      name: email,
+      email,
       mess: message,
       time: newTime,
     };
-    sendMessage(message, myMessage.time);
+
+    console.log(roomName, 'ROOM_NAME');
+    sendMessage(email, message, newTime, roomName);
     this.setState({ message: '' });
     // eslint-disable-next-line react/destructuring-assignment
-    this.props.sendMess(myMessage);
+    this.props.renderMess(myMessage);
   }
 
   keyPress = (event) => {
@@ -71,4 +75,5 @@ class InputMessage extends Component {
 export default connect(state => ({
   connection: state.connectionState,
   email: state.email,
-}), { sendMess })(InputMessage);
+  roomName: state.roomName,
+}), { renderMess })(InputMessage);

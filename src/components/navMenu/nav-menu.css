@@ -7,3 +7,24 @@
     color: #fff;
     padding-right: 10px; 
 }
+
+.create-room-btn {
+    background: none;
+}
+
+.name-error {
+    color: #ff0000;
+    align-content: center;
+}
+
+.form-check-label {
+    cursor: pointer;
+}
+
+.form-check-label:hover {
+    color: #28a745;
+}
+
+.form-check {
+    border-bottom: 1px solid #4242423d;
+}

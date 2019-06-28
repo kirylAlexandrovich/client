@@ -1,20 +1,17 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Redirect } from 'react-router';
-import Message from './Message';
+import Message from './message';
+import { rerenderMessage, getRoomMessages } from '../redux/actions';
 
 class Chat extends Component {
   getChatContainer = (node) => { this.chatContainer = node; }
 
   scrollToBottom = () => {
-    this.chatContainer.scrollTop = this.chatContainer.scrollHeight - this.chatContainer.clientHeight;
-    // console.log(this.chatContainer.scrollTop, this.chatContainer.scrollHeight, this.chatContainer.clientHeight);
+    this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
   }
 
-  componentWillUpdate = () => {
-    // console.log('------');
+  componentDidUpdate = () => {
     this.scrollToBottom();
   }
 
@@ -22,17 +19,26 @@ class Chat extends Component {
     const heightStyle = {
       height: `${window.innerHeight - 156}px`,
     };
-    const { messages } = this.props;
-
+    const {
+      messages,
+      email,
+      connectionState,
+      history,
+      getRM,
+    } = this.props;
+    if (messages.length === 0 && connectionState) {
+      getRM('general');
+    }
     return (
       <div ref={this.getChatContainer} className="chat-container" style={heightStyle}>
-        {messages.map((el, index) => (<Message message={el} key={el.time + index} />))}
+        {connectionState ? messages.map(el => (<Message message={el} email={email} key={el.time} />)) : history.push('/')}
       </div>
     );
   }
 }
 
 export default connect(state => ({
+  email: state.email,
   messages: state.messages,
   connectionState: state.connectionState,
-}))(Chat);
+}), { rerenderMessage, getRM: getRoomMessages })(Chat);

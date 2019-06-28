@@ -1,20 +1,21 @@
 /* eslint-disable react/prop-types */
-import './chatStyles.css';
+import './chat-styles.css';
 import React from 'react';
-import Chat from './Chat';
-import ChatRooms from './ChatRooms';
-import InputMessage from './InputMessage';
-// import {connect} from 'react-redux';
+import Chat from './chat';
+import InputMessage from './input-message';
+// import RoomsList from './rooms-list';
+import ClientsAndRooms from './clients-and-rooms';
 
 export default function ChatPage(props) {
   const { history } = props;
   if (sessionStorage.getItem('connState') === null) {
     history.push('/');
   }
+
   return (
     <div className="chat-page-container">
-      <Chat />
-      <ChatRooms />
+      <Chat history={history} />
+      <ClientsAndRooms />
       <InputMessage />
     </div>
   );

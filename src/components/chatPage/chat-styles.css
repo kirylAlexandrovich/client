@@ -31,7 +31,7 @@
 }
 
 .input-mess-container {
-    width: 100%;
+    width: 75%;
     height: 100px;
     display: flex;
     position: fixed;
@@ -67,3 +67,53 @@
 .users-list li:hover {
     background: linear-gradient(90deg, #e2e0e0 0%, #ffffff 100%);
 }
+
+.clients-and-rooms-container {
+    width: 25%;
+}
+
+.clients-list {
+    width: 100%;
+}
+
+.buttons-container {
+    width: 100%;
+    display: flex;
+    /* background-color: #e2e0e0; */
+}
+
+.tabs {
+    width: 50%;
+    color: #46b811;
+    padding: 5px 0;
+    text-decoration: none;
+    background-color: #eaeaed;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #cecfd5
+    /* box-shadow: inset 0px -3px 7px 0px #00000054; */
+}
+
+.hover-tab:hover {
+    color: #15ff00;
+}
+
+.active-tab {
+    background-color: #fff;
+    border: none;
+    color: #ff7b29;
+}
+
+/* .tabs-link {
+    display: block;
+    color: #5e646b;
+    text-align: center;
+     text-decoration: none;
+     padding: 5px 0;
+} */ 
+
+/* .tabs-link:hover {
+    text-decoration: none;
+    color: #aa4242;
+} */

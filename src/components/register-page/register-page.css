@@ -1,6 +1,10 @@
-.registration-form {
+.register-form {
     width: 60%;
     height: 50vh;
-    margin: 20vh auto;
-
+    margin: 5vh auto;
+    padding: 20px;
+    background-color: #5e646b;
+    background: radial-gradient(circle, #a2a7ad 0%, #5e646b 100%);
+    border-radius: 10px;
+    box-shadow: 1px 3px 5px 2px #5e646bb0;
 }

@@ -8,26 +8,21 @@ let socket;
 
 const client = (nickname) => {
   console.log(nickname, 'nickname or email');
-  const logIn = nickname !== 'undefined' ? nickname : 'TODO: email from lockal storage';
+  const logIn = nickname || 'TODO: email from lockal storage';
   store.dispatch({ type: 'CHANGE_CONNECTION_STATE', payload: true });
   socket = openSocket('http://localhost:8000');
 
   socket.on('connected', (clientsList) => {
-    // sessionStorage.setItem('connState', true);
-    console.log(clientsList, 'CLIENTS LIST FROM SERVER');
     store.dispatch({ type: 'RENDER_CLIENTS_LIST', payload: clientsList });
     console.log('connected');
     socket.emit('saveClient', logIn);
   });
 
   socket.on('changeClientsList', (clientsList) => {
-    console.log('------------ changing list of clients', clientsList);
     store.dispatch({ type: 'RENDER_CLIENTS_LIST', payload: clientsList });
   });
 
   socket.on('message', (data) => {
-    console.log('DATA', data);
-    // sendMess(data);
     store.dispatch({ type: 'RENDER_MESS', payload: data });
   });
 
@@ -36,21 +31,40 @@ const client = (nickname) => {
   });
 
   store.subscribe(() => {
-    // console.log(store.getState().connectionState, '------------conn state ------------- - - - - -');
-    if (store.getState().connectionState === false) {
-      // sessionStorage.setItem('connState', false);
-      console.log('dissconnect');
+    if (!store.getState().connectionState) {
+      console.log('socket dissconnected');
       socket.disconnect();
+    }
+  });
+
+  let currentRoom;
+
+  store.subscribe(() => {
+    const stateRoom = store.getState().roomName;
+    // console.log('state room', stateRoom, 'current room', currentRoom);
+    if (currentRoom !== stateRoom) {
+      socket.emit('change_room', { stateRoom, currentRoom });
+      currentRoom = stateRoom;
     }
   });
 };
 
-function sendMessage(mess, time) {
-  socket.emit('message', { mess, time });
+function sendMessage(email, mess, time, roomName) {
+  socket.emit('message', {
+    email,
+    mess,
+    time,
+    roomName,
+  });
 }
 
-function startSocket(nick) {
-  client(nick);
-}
+store.subscribe(() => {
+  const { email, connectionState } = store.getState();
+  const storageEmail = sessionStorage.getItem('connState');
+  if (email && connectionState === false && storageEmail !== 'false') {
+    console.log('start socket with email:', [email, connectionState, storageEmail]);
+    client(email);
+  }
+});
 
-export { sendMessage, startSocket };
+export default sendMessage;
