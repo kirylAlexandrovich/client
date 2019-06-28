@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setEmail, logInUser } from '../redux/actions/index';
-import './logInPage.css';
+import './log-in-page.css';
 import LogInForm from './log-in-form';
 
 

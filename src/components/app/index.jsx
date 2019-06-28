@@ -2,9 +2,9 @@ import React from 'react';
 // import HomePage from '../homePage/homePage';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import LogInPage from '../logInPage/LogInPage';
-import NavMenu from '../navMenu/NavMenu';
-import ChatPage from '../chatPage/chat-page';
+import LogInPage from '../log-in-page/log-in-page';
+import NavMenu from '../nav-menu/nav-menu';
+import ChatPage from '../chat-page/chat-page';
 import RegisterPage from '../register-page';
 import store from './store';
 
