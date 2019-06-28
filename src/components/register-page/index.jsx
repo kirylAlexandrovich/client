@@ -19,41 +19,33 @@ class RegisterPage extends React.Component {
           <Col md={6}>
             <FormGroup>
               <Label for="firstName">First Name</Label>
-              <Input type="text" name="firstName" id="firstName" placeholder="First Name" />
+              <Input type="text" name="first-name" id="firstName" placeholder="First Name" />
             </FormGroup>
           </Col>
           <Col md={6}>
             <FormGroup>
-              <Label for="examplePassword">Last name</Label>
-              <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
+              <Label for="lastName">Last Name</Label>
+              <Input type="text" name="last-name" id="lastName" placeholder="Last Name" />
             </FormGroup>
           </Col>
         </Row>
+
         <FormGroup>
           <Label for="exampleEmail">Email</Label>
-          <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
+          <Input type="email" name="email" id="exampleEmail" placeholder="Enter email address" />
         </FormGroup>
-        <FormGroup>
-          <Label for="exampleAddress2">Address 2</Label>
-          <Input type="text" name="address2" id="exampleAddress2" placeholder="Apartment, studio, or floor" />
-        </FormGroup>
+
         <Row form>
           <Col md={6}>
             <FormGroup>
-              <Label for="exampleCity">City</Label>
-              <Input type="text" name="city" id="exampleCity" />
+              <Label for="password">Password</Label>
+              <Input type="text" name="first-name" id="firstName" placeholder="Password" />
             </FormGroup>
           </Col>
-          <Col md={4}>
+          <Col md={6}>
             <FormGroup>
-              <Label for="exampleState">State</Label>
-              <Input type="text" name="state" id="exampleState" />
-            </FormGroup>
-          </Col>
-          <Col md={2}>
-            <FormGroup>
-              <Label for="exampleZip">Zip</Label>
-              <Input type="text" name="zip" id="exampleZip" />
+              <Label for="lastName">Confirm password</Label>
+              <Input type="text" name="last-name" id="lastName" placeholder="Password" />
             </FormGroup>
           </Col>
         </Row>
