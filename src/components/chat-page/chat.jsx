@@ -11,8 +11,27 @@ class Chat extends Component {
     this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
   }
 
+  changePathToLogIn = () => {
+    const { connectionState, history } = this.props;
+    if (!connectionState) {
+      history.push('/');
+    }
+  }
+
   componentDidUpdate = () => {
+    this.changePathToLogIn();
     this.scrollToBottom();
+  }
+
+  componentDidMount = () => {
+    const {
+      messages, connectionState, roomName, getRM,
+    } = this.props;
+
+    if (messages.length === 0 && connectionState) {
+      getRM(roomName);
+    }
+    this.changePathToLogIn();
   }
 
   render() {
@@ -20,18 +39,11 @@ class Chat extends Component {
       height: `${window.innerHeight - 156}px`,
     };
     const {
-      messages,
-      email,
-      connectionState,
-      history,
-      getRM,
+      messages, email,
     } = this.props;
-    if (messages.length === 0 && connectionState) {
-      getRM('general');
-    }
     return (
       <div ref={this.getChatContainer} className="chat-container" style={heightStyle}>
-        {connectionState ? messages.map(el => (<Message message={el} email={email} key={el.time} />)) : history.push('/')}
+        {messages.map(el => <Message message={el} email={email} key={el.mess + el.time} />)}
       </div>
     );
   }
@@ -41,4 +53,5 @@ export default connect(state => ({
   email: state.email,
   messages: state.messages,
   connectionState: state.connectionState,
+  roomName: state.roomName,
 }), { rerenderMessage, getRM: getRoomMessages })(Chat);

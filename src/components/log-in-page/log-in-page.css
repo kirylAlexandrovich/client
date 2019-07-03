@@ -2,12 +2,13 @@ body {
     background-color: #b5b5b5;
 }
 .log-in-container {
-    width: 500px;
+    max-width: 500px;
     margin: 10% auto;
     padding: 50px;
     text-align: center;
     color: #fff;
     background-color: #5e646b;
+    box-shadow: 1px 3px 5px 2px #5e646bb0;
     border-radius: 10px;
 }
 
@@ -15,6 +16,14 @@ body {
     margin-bottom: 40px; 
 }
 
+.button-group {
+    justify-content: center;
+}
+
+.log-in-btn {
+    margin: 10px 15px;
+}
+ 
 .sign-in-link {
     color: #28a745;
 }
@@ -23,7 +32,7 @@ body {
     margin: 10px 15px;
 }
 
-.oauth-butt-container {
+.oauth-btn-container {
     display: flex;
     justify-content: center;
 }

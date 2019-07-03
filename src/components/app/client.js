@@ -8,19 +8,19 @@ let socket;
 
 const client = (nickname) => {
   console.log(nickname, 'nickname or email');
-  const logIn = nickname || 'TODO: email from lockal storage';
   store.dispatch({ type: 'CHANGE_CONNECTION_STATE', payload: true });
   socket = openSocket('http://localhost:8000');
 
-  socket.on('connected', (clientsList) => {
-    store.dispatch({ type: 'RENDER_CLIENTS_LIST', payload: clientsList });
+  socket.on('connected', () => {
+    // store.dispatch({ type: 'RENDER_CLIENTS_LIST', payload: clientsList });
     console.log('connected');
-    socket.emit('saveClient', logIn);
+    socket.emit('saveClient', nickname);
   });
 
-  socket.on('changeClientsList', (clientsList) => {
-    store.dispatch({ type: 'RENDER_CLIENTS_LIST', payload: clientsList });
-  });
+  // socket.on('changeClientsList', (clientsList) => {
+  //   console.log(clientsList);
+  //   store.dispatch({ type: 'RENDER_CLIENTS_LIST', payload: clientsList });
+  // });
 
   socket.on('message', (data) => {
     store.dispatch({ type: 'RENDER_MESS', payload: data });

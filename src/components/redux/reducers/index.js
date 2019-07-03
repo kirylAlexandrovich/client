@@ -28,6 +28,7 @@ export default function reducers(state = initialState, action) {
       return { ...state, roomsList: action.payload };
 
     case 'CHANGE_ROOM':
+      console.log(action.payload);
       return { ...state, roomName: action.payload };
 
     case 'SET_EMAIL':

@@ -1,62 +1,74 @@
-/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
+import { connect } from 'react-redux';
 import React from 'react';
+import cryptoJS from 'crypto-js';
+import RegisterForm from './register-form';
 import './register-page.css';
-import {
-  Col,
-  Row,
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-} from 'reactstrap';
+import { sendUserDetails, createError } from '../redux/actions';
 
 class RegisterPage extends React.Component {
+  state = {
+    email: '',
+    password: '',
+    confirmPassword: '',
+    firstName: '',
+    lastName: '',
+  }
+
+  onInput = (event) => {
+    this.setState({ [event.target.id]: event.target.value });
+  }
+
+  changePathToChat = () => {
+    const { history } = this.props;
+    history.push('/chat');
+  }
+
+  onSubmit = () => {
+    const {
+      email, password,
+      confirmPassword,
+      firstName, lastName,
+    } = this.state;
+    const { error } = this.props;
+    if (!email || !password || !firstName || !lastName) {
+      error('Please, fill all required fields');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      error('Password does not match');
+      return;
+    }
+
+    const cryptoPassword = cryptoJS.SHA256(password).toString();
+    const userDetails = {
+      email, firstName, lastName, cryptoPassword,
+    };
+
+    error('');
+
+    this.props.sendUserDetails(userDetails);
+  }
+
+  componentDidUpdate = () => {
+    const { connectionState, error } = this.props;
+    if (connectionState) {
+      error('');
+      this.changePathToChat();
+    }
+  }
+
   render() {
+    const { errorMsg } = this.props;
     return (
-      <Form className="register-form">
-        <Row form>
-          <Col md={6}>
-            <FormGroup>
-              <Label for="firstName">First Name</Label>
-              <Input type="text" name="first-name" id="firstName" placeholder="First Name" />
-            </FormGroup>
-          </Col>
-          <Col md={6}>
-            <FormGroup>
-              <Label for="lastName">Last Name</Label>
-              <Input type="text" name="last-name" id="lastName" placeholder="Last Name" />
-            </FormGroup>
-          </Col>
-        </Row>
-
-        <FormGroup>
-          <Label for="exampleEmail">Email</Label>
-          <Input type="email" name="email" id="exampleEmail" placeholder="Enter email address" />
-        </FormGroup>
-
-        <Row form>
-          <Col md={6}>
-            <FormGroup>
-              <Label for="password">Password</Label>
-              <Input type="text" name="first-name" id="firstName" placeholder="Password" />
-            </FormGroup>
-          </Col>
-          <Col md={6}>
-            <FormGroup>
-              <Label for="lastName">Confirm password</Label>
-              <Input type="text" name="last-name" id="lastName" placeholder="Password" />
-            </FormGroup>
-          </Col>
-        </Row>
-        <FormGroup check>
-          <Input type="checkbox" name="check" id="exampleCheck" />
-          <Label for="exampleCheck" check>Check me out</Label>
-        </FormGroup>
-        <Button outline color="success">Sign in</Button>
-      </Form>
+      <RegisterForm onInput={this.onInput} onSubmit={this.onSubmit} error={errorMsg} />
     );
   }
 }
 
-export default RegisterPage;
+export default connect(state => ({
+  errorMsg: state.error,
+  connectionState: state.connectionState,
+}), { sendUserDetails, error: createError })(RegisterPage);

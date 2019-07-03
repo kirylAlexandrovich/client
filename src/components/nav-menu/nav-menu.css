@@ -3,6 +3,15 @@
     right: 20px;
 }
 
+.nav-menu {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.5rem 1rem;
+}
+
 .userEmail {
     color: #fff;
     padding-right: 10px; 

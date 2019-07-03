@@ -10,15 +10,9 @@ import './nav-menu.css';
 //   }
 export default function NavMenu() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="nav-menu navbar-expand-lg navbar-dark bg-dark">
       <Link to="/chat" className="navbar-brand">Msg)</Link>
-      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon" />
-      </button>
-
-      <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <LogInButton />
-      </div>
+      <LogInButton />
     </nav>
   );
 }

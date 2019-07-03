@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 
-function ClientsList(props) {
+export default function ClientsList(props) {
   const { clientsList, email } = props;
   const domClientsList = clientsList.map((element) => {
     if (element !== email) {
@@ -17,6 +17,3 @@ function ClientsList(props) {
     </div>
   );
 }
-
-
-export default ClientsList;

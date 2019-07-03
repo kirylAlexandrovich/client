@@ -1,8 +1,9 @@
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
+import cryptoJS from 'crypto-js';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setEmail, logInUser } from '../redux/actions/index';
+import { setEmail, logInUser, createError } from '../redux/actions/index';
 import './log-in-page.css';
 import LogInForm from './log-in-form';
 
@@ -18,7 +19,7 @@ class LogInPage extends Component {
     if (event.target.id === 'staticEmail') {
       this.setState({ email: event.target.value });
       const email = event.target.value;
-      if (email.search(/.+@(gmail|mail)\.[a-z]{2,}/) === -1) {
+      if (email.search(/.+@.+\.[a-z]{2,}/) === -1) {
         this.setState({ isValidEmail: 'form-control is-invalid' });
       } else {
         this.setState({ isValidEmail: 'form-control is-valid' });
@@ -36,37 +37,51 @@ class LogInPage extends Component {
   submit = () => {
     const { password, email } = this.state;
     const { connectionState } = this.props;
-    if (email.search(/.+@(gmail|mail)\.[a-z]{2,}/) !== -1) {
-      this.props.logInUser(email, password);
+    const cryptoPassword = cryptoJS.SHA256(password).toString();
+    console.log(email.search(/.+@(gmail|mail)\.[a-z]{2,}/), 'submit');
+    if (email.search(/.+@.+\.[a-z]{2,}/) !== -1) {
+      this.props.logInUser(email, cryptoPassword);
       if (connectionState) {
+        this.props.createError('');
         this.changePathToChat();
       }
     }
   }
 
   googleAuth = (response) => {
+    console.log(response);
     this.props.setEmail(response.w3.U3);
+    this.props.createError('');
     sessionStorage.setItem('connState', response.w3.U3);
     this.changePathToChat();
   }
 
+  componentDidMount = () => {
+    const { connectionState } = this.props;
+    if (connectionState) {
+      this.changePathToChat();
+    }
+  }
+
+  componentDidUpdate = () => {
+    const { connectionState } = this.props;
+    if (connectionState) {
+      this.changePathToChat();
+    }
+  }
+
   render() {
     const { isValidEmail } = this.state;
-    const { error, connectionState } = this.props;
-    console.log('render login page', connectionState);
+    const { error } = this.props;
     return (
       <React.Fragment>
-        {connectionState
-          ? this.changePathToChat()
-          : (
-            <LogInForm
-              onInput={this.onInput}
-              error={error}
-              isValidEmail={isValidEmail}
-              submit={this.submit}
-              googleAuth={this.googleAuth}
-            />
-          )}
+        <LogInForm
+          onInput={this.onInput}
+          error={error}
+          isValidEmail={isValidEmail}
+          submit={this.submit}
+          googleAuth={this.googleAuth}
+        />
       </React.Fragment>
     );
   }
@@ -75,4 +90,4 @@ class LogInPage extends Component {
 export default connect(state => ({
   error: state.error,
   connectionState: state.connectionState,
-}), { setEmail, logInUser })(LogInPage);
+}), { setEmail, logInUser, createError })(LogInPage);

@@ -1,10 +1,22 @@
 .register-form {
-    width: 60%;
-    height: 50vh;
-    margin: 5vh auto;
+    max-width: 800px;
+    margin: 15vh auto;
     padding: 20px;
+    text-align: center;
     background-color: #5e646b;
-    background: radial-gradient(circle, #a2a7ad 0%, #5e646b 100%);
     border-radius: 10px;
     box-shadow: 1px 3px 5px 2px #5e646bb0;
+    color: #f0f8ff;
+}
+
+.throw-error {
+    color: #ff7d7d;
+}
+
+.register-head {
+    text-align: center;
+}
+
+.register-btn {
+    width: 100%;
 }

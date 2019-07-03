@@ -8,17 +8,20 @@ export const changeConnState = connectionState => ({ type: 'CHANGE_CONNECTION_ST
 
 export const setEmail = email => ({ type: 'SET_EMAIL', payload: email });
 
+export const renderClientsList = clientsList => ({ type: 'RENDER_CLIENTS_LIST', payload: clientsList });
+
 export const changeRoomsList = roomsList => ({ type: 'CHANGE_ROOMS_LIST', payload: roomsList });
 
 export const changeRoom = room => ({ type: 'CHANGE_ROOM', payload: room });
 
-export const error = errorText => ({ type: 'CREATE_ERROR', payload: errorText });
+export const createError = errorText => ({ type: 'CREATE_ERROR', payload: errorText });
 
 export const roomCreated = isCreated => ({ type: 'ROOM_CREATED', payload: isCreated });
 
+const host = 'http://192.168.1.97';
+
 export const getRoomsList = email => (dispatch) => {
-  console.log(email, 'get rooms email');
-  axios.get('http://localhost:8080/rooms', {
+  axios.get(`${host}:8080/rooms`, {
     params: { email },
   }).then((res) => {
     dispatch(changeRoomsList(res.data));
@@ -26,7 +29,7 @@ export const getRoomsList = email => (dispatch) => {
 };
 
 export const logInUser = (email, password) => (dispatch) => {
-  axios.post('http://localhost:8080/login', {
+  axios.post(`${host}:8080/login`, {
     email,
     password,
   },
@@ -35,11 +38,12 @@ export const logInUser = (email, password) => (dispatch) => {
       'Content-Type': 'application/json',
     },
   }).then((res) => {
-    if (res.data === 'no such client') {
-      dispatch(error('Incorrect email or password'));
+    if (res.data === 'no_such_client' || res.data === 'wrong_password') {
+      dispatch(createError('Incorrect email or password'));
       return;
     }
     sessionStorage.setItem('connState', res.data.email);
+    dispatch(createError(''));
     dispatch(setEmail(res.data.email));
   }).catch((err) => {
     console.log(err);
@@ -48,24 +52,43 @@ export const logInUser = (email, password) => (dispatch) => {
 
 export const getRoomMessages = roomName => (dispatch) => {
   dispatch(changeRoom(roomName));
-  axios.post('http://localhost:8080/join_to_room', { roomName })
+  axios.post(`${host}:8080/join_to_room`, { roomName })
     .then((res) => {
-      res.data.forEach((el) => {
-        dispatch(rerenderMessage(el));
-      });
+      dispatch(rerenderMessage(res.data));
     }).catch((err) => { console.log(err); });
 };
 
 export const createRoom = (addingPeople, roomName, email) => (dispatch) => {
-  axios.post('http://localhost:8080/create_room', { addingPeople, roomName, email })
+  axios.post(`${host}:8080/create_room`, { addingPeople, roomName, email })
     .then((res) => {
       if (res.data.isCreated === true) {
         dispatch(getRoomsList(email));
         dispatch(roomCreated(true));
-        // this.toggle();
       } else {
-        dispatch(error('The name already used, create another name.'));
-        // this.setState({ nameError: 'The name already used, create another name.' });
+        dispatch(createError('The name already used, create another name.'));
       }
     }).catch(err => console.log(err));
+};
+
+export const sendUserDetails = details => (dispatch) => {
+  axios.post(`${host}:8080/register_user`, { details })
+    .then((res) => {
+      if (res.data.error) {
+        dispatch(createError(res.data.error));
+      }
+      if (res.data === true) {
+        dispatch(createError(''));
+        sessionStorage.setItem('connState', details.email);
+        dispatch(setEmail(details.email));
+      }
+    }).catch((err) => {
+      console.log(err, 'ERROR');
+    });
+};
+
+export const getUsersList = () => (dispatch) => {
+  axios.get(`${host}:8080/clients_list`)
+    .then((res) => {
+      dispatch(renderClientsList(res.data));
+    }).catch((err) => { console.log(err); });
 };

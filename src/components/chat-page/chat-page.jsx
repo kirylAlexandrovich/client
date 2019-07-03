@@ -8,13 +8,12 @@ import ClientsAndRooms from './clients-and-rooms';
 
 export default function ChatPage(props) {
   const { history } = props;
-  if (sessionStorage.getItem('connState') === null) {
-    history.push('/');
-  }
-
+  // if (sessionStorage.getItem('connState') === null) {
+  //   history.push('/');
+  // }
   return (
     <div className="chat-page-container">
-      <Chat history={history} />
+      <Chat history={history} key={Chat.id} />
       <ClientsAndRooms />
       <InputMessage />
     </div>

@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import RoomsList from './rooms-list';
 import ClientsList from './clients-list';
-import { rerenderMessage, getRoomMessages, getRoomsList } from '../redux/actions';
+import {
+  rerenderMessage, getRoomMessages,
+  getRoomsList, getUsersList, changeRoom,
+} from '../redux/actions';
 
 
 class ClientsAndRooms extends Component {
@@ -15,6 +18,7 @@ class ClientsAndRooms extends Component {
   }
 
   switchToPeople = () => {
+    this.props.getUsersList();
     this.setState({
       switchOn: false,
       peopleBtnClass: 'tabs active-tab',
@@ -32,13 +36,15 @@ class ClientsAndRooms extends Component {
 
   componentDidMount = () => {
     const { email } = this.props;
+    console.log('DID MOUNT');
+    this.props.getUsersList();
     if (email !== null) {
       this.props.getRoomsList(email);
     }
   }
 
-  chooseRoom = (roomName) => {
-    this.props.getRoomMessages(roomName);
+  chooseRoom = (event) => {
+    this.props.getRoomMessages(event.target.innerText);
   }
 
   render() {
@@ -66,4 +72,6 @@ export default connect(state => ({
   email: state.email,
   clientList: state.clientsList,
   roomsList: state.roomsList,
-}), { rerenderMessage, getRoomMessages, getRoomsList })(ClientsAndRooms);
+}), {
+  rerenderMessage, getRoomMessages, getRoomsList, getUsersList, changeRoom,
+})(ClientsAndRooms);
