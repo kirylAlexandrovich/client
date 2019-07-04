@@ -36,7 +36,6 @@ class ClientsAndRooms extends Component {
 
   componentDidMount = () => {
     const { email } = this.props;
-    console.log('DID MOUNT');
     this.props.getUsersList();
     if (email !== null) {
       this.props.getRoomsList(email);

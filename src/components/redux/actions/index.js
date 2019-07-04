@@ -18,7 +18,7 @@ export const createError = errorText => ({ type: 'CREATE_ERROR', payload: errorT
 
 export const roomCreated = isCreated => ({ type: 'ROOM_CREATED', payload: isCreated });
 
-const host = 'http://192.168.1.97';
+const host = 'http://localhost';
 
 export const getRoomsList = email => (dispatch) => {
   axios.get(`${host}:8080/rooms`, {

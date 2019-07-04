@@ -7,7 +7,6 @@ import store from './store';
 let socket;
 
 const client = (nickname) => {
-  console.log(nickname, 'nickname or email');
   store.dispatch({ type: 'CHANGE_CONNECTION_STATE', payload: true });
   socket = openSocket('http://localhost:8000');
 
@@ -62,7 +61,6 @@ store.subscribe(() => {
   const { email, connectionState } = store.getState();
   const storageEmail = sessionStorage.getItem('connState');
   if (email && connectionState === false && storageEmail !== 'false') {
-    console.log('start socket with email:', [email, connectionState, storageEmail]);
     client(email);
   }
 });
