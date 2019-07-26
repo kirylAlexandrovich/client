@@ -39,8 +39,8 @@ class LogInButton extends React.Component {
 }
 
 export default connect(state => ({
-  connectionState: state.connectionState,
-  email: state.email,
-  clientsList: state.clientsList,
+  connectionState: state.appStates.connectionState,
+  email: state.user.email,
+  clientsList: state.lists.clientsList,
 }),
 { changeConnState, setEmail })(LogInButton);

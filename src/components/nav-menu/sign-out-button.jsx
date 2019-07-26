@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default function SignOutButton(props) {
-  const { email, signOut } = props;
+// eslint-disable-next-line react/prop-types
+export default function SignOutButton({ email, signOut }) {
   return (
     <React.Fragment>
       <span className="userEmail">{email}</span>

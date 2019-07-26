@@ -18,6 +18,8 @@ export const createError = errorText => ({ type: 'CREATE_ERROR', payload: errorT
 
 export const roomCreated = isCreated => ({ type: 'ROOM_CREATED', payload: isCreated });
 
+export const resetNewMessages = roomName => ({ type: 'RESET_NEW_MESSAGES', payload: roomName });
+
 const host = 'http://localhost';
 
 export const getRoomsList = email => (dispatch) => {

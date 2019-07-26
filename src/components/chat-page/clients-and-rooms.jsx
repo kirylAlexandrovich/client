@@ -7,18 +7,21 @@ import ClientsList from './clients-list';
 import {
   rerenderMessage, getRoomMessages,
   getRoomsList, getUsersList, changeRoom,
+  resetNewMessages,
 } from '../redux/actions';
 
 
 class ClientsAndRooms extends Component {
   state = {
-    switchOn: false,
-    peopleBtnClass: 'tabs active-tab',
-    chatListBtnClass: 'tabs',
+    switchOn: true,
+    peopleBtnClass: 'tabs',
+    chatListBtnClass: 'tabs active-tab',
   }
 
   switchToPeople = () => {
-    this.props.getUsersList();
+    if (this.props.clientsList.length === 0) {
+      this.props.getUsersList();
+    }
     this.setState({
       switchOn: false,
       peopleBtnClass: 'tabs active-tab',
@@ -34,16 +37,9 @@ class ClientsAndRooms extends Component {
     });
   }
 
-  componentDidMount = () => {
-    const { email } = this.props;
-    this.props.getUsersList();
-    if (email !== null) {
-      this.props.getRoomsList(email);
-    }
-  }
-
-  chooseRoom = (event) => {
-    this.props.getRoomMessages(event.target.innerText);
+  chooseRoom = (roomName) => {
+    this.props.getRoomMessages(roomName);
+    this.props.resetNewMessages(roomName);
   }
 
   render() {
@@ -52,7 +48,14 @@ class ClientsAndRooms extends Component {
       chatListBtnClass,
       switchOn,
     } = this.state;
-    const { email, clientList, roomsList } = this.props;
+
+    const {
+      email, clientsList, roomsList, currentRoom, hasRoomNewMessage,
+    } = this.props;
+
+    if (email && roomsList.length === 0) {
+      this.props.getRoomsList(email);
+    }
     return (
       <div className="clients-and-rooms-container">
         <div className="buttons-container">
@@ -60,17 +63,19 @@ class ClientsAndRooms extends Component {
           <div className={chatListBtnClass} onClick={this.switchToChatList} onKeyDown={() => { }} role="button" tabIndex={0}>Chats list</div>
         </div>
         {switchOn
-          ? <RoomsList onClick={this.chooseRoom} roomsList={roomsList} />
-          : <ClientsList email={email} clientsList={clientList} />}
+          ? <RoomsList onClick={this.chooseRoom} roomsList={roomsList} currentRoom={currentRoom} hasRoomNewMessage={hasRoomNewMessage} />
+          : <ClientsList email={email} clientsList={clientsList} />}
       </div>
     );
   }
 }
 
 export default connect(state => ({
-  email: state.email,
-  clientList: state.clientsList,
-  roomsList: state.roomsList,
+  email: state.user.email,
+  clientsList: state.lists.clientsList,
+  roomsList: state.rooms.roomsList,
+  currentRoom: state.rooms.roomName,
+  hasRoomNewMessage: state.rooms.hasRoomNewMessage,
 }), {
-  rerenderMessage, getRoomMessages, getRoomsList, getUsersList, changeRoom,
+  rerenderMessage, getRoomMessages, getRoomsList, getUsersList, changeRoom, resetNewMessages,
 })(ClientsAndRooms);

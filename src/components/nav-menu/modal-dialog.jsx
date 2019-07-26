@@ -14,7 +14,7 @@ import {
   Col,
   Input,
 } from 'reactstrap';
-import { createRoom, roomCreated } from '../redux/actions';
+import { createRoom, roomCreated, getUsersList } from '../redux/actions';
 
 class ModalCreateRoom extends React.Component {
   constructor(props) {
@@ -68,9 +68,12 @@ class ModalCreateRoom extends React.Component {
   }
 
   componentDidUpdate = () => {
-    const { wasRoomCreated } = this.props;
+    const { wasRoomCreated, clientsList } = this.props;
     if (wasRoomCreated) {
       this.toggle();
+    }
+    if (clientsList.length === 0) {
+      this.props.getUsersList();
     }
   }
 
@@ -121,10 +124,10 @@ class ModalCreateRoom extends React.Component {
 }
 
 export default connect(state => ({
-  connectionState: state.connectionState,
-  email: state.email,
-  clientsList: state.clientsList,
-  error: state.error,
-  wasRoomCreated: state.wasRoomCreated,
+  connectionState: state.appStates.connectionState,
+  email: state.user.email,
+  clientsList: state.lists.clientsList,
+  error: state.errors.error,
+  wasRoomCreated: state.rooms.wasRoomCreated,
 }),
-{ createRoom, roomCreated })(ModalCreateRoom);
+{ createRoom, roomCreated, getUsersList })(ModalCreateRoom);

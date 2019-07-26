@@ -88,6 +88,6 @@ class LogInPage extends Component {
 }
 
 export default connect(state => ({
-  error: state.error,
-  connectionState: state.connectionState,
+  error: state.errors.error,
+  connectionState: state.appStates.connectionState,
 }), { setEmail, logInUser, createError })(LogInPage);

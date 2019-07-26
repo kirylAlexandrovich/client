@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 
-export default function ClientsList(props) {
-  const { clientsList, email } = props;
+export default function ClientsList({ clientsList, email }) {
   const domClientsList = clientsList.map((element) => {
     if (element !== email) {
       return <li key={element}>{element}</li>;

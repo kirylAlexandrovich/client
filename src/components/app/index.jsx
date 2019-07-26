@@ -6,15 +6,15 @@ import LogInPage from '../log-in-page/log-in-page';
 import NavMenu from '../nav-menu/nav-menu';
 import ChatPage from '../chat-page/chat-page';
 import RegisterPage from '../register-page';
-import store from './store';
+import store from '../redux/store';
 
 function App() {
+  console.log(store.getState());
   return (
     <Provider store={store}>
       <Router>
         <NavMenu />
         <Switch>
-          {/* <Route exact path='/' component={HomePage} /> */}
           <Route exact path="/" component={LogInPage} />
           <Route path="/chat" component={ChatPage} />
           <Route path="/register" component={RegisterPage} />

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { renderMess } from '../redux/actions';
-import sendMessage from '../app/client';
+import sendMessage from '../../servises/client';
 
 class InputMessage extends Component {
   state = {
@@ -73,7 +73,7 @@ class InputMessage extends Component {
 }
 
 export default connect(state => ({
-  connection: state.connectionState,
-  email: state.email,
-  roomName: state.roomName,
+  connection: state.appStates.connectionState,
+  email: state.user.email,
+  roomName: state.rooms.roomName,
 }), { renderMess })(InputMessage);
