@@ -36,3 +36,11 @@ body {
     display: flex;
     justify-content: center;
 }
+
+@media screen and (max-width: 500px) {
+    .log-in-container {
+        margin: 0;
+        padding: 20px;
+        border-radius: 0;
+    }
+}

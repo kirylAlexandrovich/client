@@ -7,14 +7,14 @@ import ClientsList from './clients-list';
 import {
   rerenderMessage, getRoomMessages,
   getRoomsList, getUsersList, changeRoom,
-  resetNewMessages,
+  resetNewMessages, createRoom,
 } from '../redux/actions';
 
 
 class ClientsAndRooms extends Component {
   state = {
     switchOn: true,
-    peopleBtnClass: 'tabs',
+    peopleBtnClass: 'tabs hover-tab',
     chatListBtnClass: 'tabs active-tab',
   }
 
@@ -42,6 +42,21 @@ class ClientsAndRooms extends Component {
     this.props.resetNewMessages(roomName);
   }
 
+  choosePrivateRoom = (userName) => {
+    const { privateRoomsList, email } = this.props;
+
+    const result = privateRoomsList.filter((element) => {
+      if (element.members.includes(userName)) {
+        this.props.getRoomMessages(element.name);
+        return true;
+      }
+      return false;
+    });
+    if (result.length === 0) {
+      this.props.createRoom([userName], userName + email, email, true);
+    }
+  }
+
   render() {
     const {
       peopleBtnClass,
@@ -52,7 +67,6 @@ class ClientsAndRooms extends Component {
     const {
       email, clientsList, roomsList, currentRoom, hasRoomNewMessage,
     } = this.props;
-
     if (email && roomsList.length === 0) {
       this.props.getRoomsList(email);
     }
@@ -64,7 +78,7 @@ class ClientsAndRooms extends Component {
         </div>
         {switchOn
           ? <RoomsList onClick={this.chooseRoom} roomsList={roomsList} currentRoom={currentRoom} hasRoomNewMessage={hasRoomNewMessage} />
-          : <ClientsList email={email} clientsList={clientsList} />}
+          : <ClientsList email={email} clientsList={clientsList} onClick={this.choosePrivateRoom} hasRoomNewMessage={hasRoomNewMessage} />}
       </div>
     );
   }
@@ -76,6 +90,13 @@ export default connect(state => ({
   roomsList: state.rooms.roomsList,
   currentRoom: state.rooms.roomName,
   hasRoomNewMessage: state.rooms.hasRoomNewMessage,
+  privateRoomsList: state.rooms.privateRoomsList,
 }), {
-  rerenderMessage, getRoomMessages, getRoomsList, getUsersList, changeRoom, resetNewMessages,
+  resetNewMessages,
+  rerenderMessage,
+  getRoomMessages,
+  getRoomsList,
+  getUsersList,
+  changeRoom,
+  createRoom,
 })(ClientsAndRooms);

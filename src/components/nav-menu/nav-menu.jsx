@@ -7,7 +7,9 @@ import './nav-menu.css';
 export default function NavMenu() {
   return (
     <nav className="nav-menu navbar-expand-lg navbar-dark bg-dark">
-      <Link to="/chat" className="navbar-brand">Msg`</Link>
+      <Link to="/chat" className="navbar-brand">
+        LemonMsg
+      </Link>
       <LogInButton />
     </nav>
   );

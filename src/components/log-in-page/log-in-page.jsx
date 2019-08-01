@@ -48,6 +48,12 @@ class LogInPage extends Component {
     }
   }
 
+  onEnterDown = (key) => {
+    if (key === 'Enter') {
+      this.submit();
+    }
+  }
+
   googleAuth = (response) => {
     console.log(response);
     this.props.setEmail(response.w3.U3);
@@ -81,6 +87,7 @@ class LogInPage extends Component {
           isValidEmail={isValidEmail}
           submit={this.submit}
           googleAuth={this.googleAuth}
+          onEnter={this.onEnterDown}
         />
       </React.Fragment>
     );

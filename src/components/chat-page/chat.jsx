@@ -5,6 +5,14 @@ import Message from './message';
 import { rerenderMessage, getRoomMessages } from '../redux/actions';
 
 class Chat extends Component {
+  state ={
+    height: window.innerHeight,
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions);
+  }
+
   getChatContainer = (node) => { this.chatContainer = node; }
 
   scrollToBottom = () => {
@@ -15,10 +23,19 @@ class Chat extends Component {
     this.scrollToBottom();
   }
 
+  updateDimensions = () => {
+    this.setState({
+      height: window.innerHeight,
+    });
+  }
+
   render() {
-    const heightStyle = {
-      height: `${window.innerHeight - 156}px`,
-    };
+    const { height } = this.state;
+    let headerAndFooterHeight = 156;
+    if (window.innerWidth < 680) {
+      headerAndFooterHeight = 101;
+    }
+
     const {
       messages, email, roomName, getRM,
     } = this.props;
@@ -27,7 +44,7 @@ class Chat extends Component {
       getRM(roomName);
     }
     return (
-      <div ref={this.getChatContainer} className="chat-container" style={heightStyle}>
+      <div ref={this.getChatContainer} className="chat-container" style={{ height: `${height - headerAndFooterHeight}px` }}>
         {messages.map(el => <Message message={el} email={email} key={el.mess + el.time} />)}
       </div>
     );

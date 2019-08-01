@@ -64,7 +64,7 @@ class ModalCreateRoom extends React.Component {
     if (addingPeople.length > 0) {
       this.setState({ nameError: '' });
     }
-    this.props.createRoom(addingPeople, roomName, email);
+    this.props.createRoom(addingPeople, roomName, email, false);
   }
 
   componentDidUpdate = () => {

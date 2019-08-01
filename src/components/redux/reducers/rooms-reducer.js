@@ -1,8 +1,8 @@
 const initialState = {
-  // currentRoomName: 'general',
   roomName: 'general',
   wasRoomCreated: false,
   roomsList: [],
+  privateRoomsList: [],
   roomMessagesMap: {},
   hasRoomNewMessage: {},
 };
@@ -18,8 +18,10 @@ export default function rooms(state = initialState, action) {
     case 'CHANGE_ROOMS_LIST':
       return { ...state, roomsList: ['general', ...action.payload] };
 
-    case 'GET_ROOMS_LIST':
-      return { ...state, roomsList: action.payload };
+    case 'CHANGE_PRIVATE_ROOMS_LIST':
+      return { ...state, privateRoomsList: action.payload };
+      // case 'GET_ROOMS_LIST':
+      //   return { ...state, roomsList: action.payload };
 
     case 'SAVE_MESSAGES_MAP':
       if (!state.roomMessagesMap[action.payload.roomName]) {

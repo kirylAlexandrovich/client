@@ -5,16 +5,14 @@ import { GoogleLogin } from 'react-google-login';
 import { Form, Label } from 'reactstrap';
 
 
-export default function LogInForm(props) {
-  const {
-    isValidEmail, onInput,
-    error, submit, googleAuth,
-  } = props;
+export default function LogInForm({
+  isValidEmail, onInput, error, submit, googleAuth, onEnter,
+}) {
   return (
     <div className="log-in-container">
       <h3 className="log-in-header">Log In:</h3>
       <span className="throw-error">{error}</span>
-      <Form>
+      <Form onKeyDown={(event) => { onEnter(event.key); }}>
         <div className="form-group row">
           <Label htmlFor="staticEmail" className="col-sm-2 col-form-label">Email</Label>
           <div className="col-sm-10">
@@ -41,6 +39,7 @@ export default function LogInForm(props) {
               required
               onChange={onInput}
               tabIndex={0}
+              onKeyDown={(event) => { console.log(event.key); }}
             />
           </div>
         </div>

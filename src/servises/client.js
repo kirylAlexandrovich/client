@@ -8,7 +8,7 @@ let socket;
 
 const client = (nickname) => {
   store.dispatch({ type: 'CHANGE_CONNECTION_STATE', payload: true });
-  socket = openSocket('http://localhost:8000');
+  socket = openSocket('http://192.168.1.65:8000');
 
   socket.on('connected', () => {
     console.log('Socket connected');
@@ -21,8 +21,7 @@ const client = (nickname) => {
   // });
 
   socket.on('message', (data) => {
-    // store.dispatch({ type: 'RENDER_MESS', payload: data });
-    if (store.getState().rooms.currentRoomName === data.roomName) {
+    if (store.getState().rooms.roomName === data.roomName) {
       store.dispatch({ type: 'RENDER_MESS', payload: data });
     } else {
       store.dispatch({ type: 'NEW_MESSAGE', payload: data.roomName });
@@ -35,11 +34,23 @@ const client = (nickname) => {
   });
 
   let currentRoomsList;
+  let currentPrivateRoomsList;
+
   store.subscribe(() => {
-    const stateRoomsList = store.getState().rooms.roomsList;
-    if (JSON.stringify(stateRoomsList) !== JSON.stringify(currentRoomsList)) {
-      currentRoomsList = stateRoomsList;
-      socket.emit('joinToRooms', stateRoomsList);
+    const { roomsList, privateRoomsList } = store.getState().rooms;
+
+    if (JSON.stringify(roomsList) !== JSON.stringify(currentRoomsList)) {
+      currentRoomsList = roomsList;
+      socket.emit('joinToRooms', roomsList);
+    }
+
+    if (JSON.stringify(privateRoomsList) !== JSON.stringify(currentPrivateRoomsList)) {
+      currentPrivateRoomsList = privateRoomsList;
+      const roomsArr = [];
+      currentPrivateRoomsList.forEach((el) => {
+        roomsArr.push(el.name);
+      });
+      socket.emit('joinToRooms', roomsArr);
     }
 
     if (!store.getState().appStates.connectionState) {

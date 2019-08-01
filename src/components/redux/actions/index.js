@@ -12,6 +12,8 @@ export const renderClientsList = clientsList => ({ type: 'RENDER_CLIENTS_LIST', 
 
 export const changeRoomsList = roomsList => ({ type: 'CHANGE_ROOMS_LIST', payload: roomsList });
 
+export const changePrivateRoomsList = privateRoomsList => ({ type: 'CHANGE_PRIVATE_ROOMS_LIST', payload: privateRoomsList });
+
 export const changeRoom = room => ({ type: 'CHANGE_ROOM', payload: room });
 
 export const createError = errorText => ({ type: 'CREATE_ERROR', payload: errorText });
@@ -20,13 +22,15 @@ export const roomCreated = isCreated => ({ type: 'ROOM_CREATED', payload: isCrea
 
 export const resetNewMessages = roomName => ({ type: 'RESET_NEW_MESSAGES', payload: roomName });
 
-const host = 'http://localhost';
+const host = 'http://192.168.1.65';
 
 export const getRoomsList = email => (dispatch) => {
   axios.get(`${host}:8080/rooms`, {
     params: { email },
   }).then((res) => {
-    dispatch(changeRoomsList(res.data));
+    console.log(res.data);
+    dispatch(changeRoomsList(res.data.roomsArr));
+    dispatch(changePrivateRoomsList(res.data.privateRoomsArr));
   }).catch((err) => { console.log(err); });
 };
 
@@ -34,8 +38,7 @@ export const logInUser = (email, password) => (dispatch) => {
   axios.post(`${host}:8080/login`, {
     email,
     password,
-  },
-  {
+  }, {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -54,22 +57,30 @@ export const logInUser = (email, password) => (dispatch) => {
 
 export const getRoomMessages = roomName => (dispatch) => {
   dispatch(changeRoom(roomName));
-  axios.post(`${host}:8080/join_to_room`, { roomName })
+  axios.post(`${host}:8080/get_room_messages`, { roomName })
     .then((res) => {
+      if (res.data.length === 0) {
+        dispatch(rerenderMessage([{ mess: 'Start chatting' }]));
+        return;
+      }
       dispatch(rerenderMessage(res.data));
     }).catch((err) => { console.log(err); });
 };
 
-export const createRoom = (addingPeople, roomName, email) => (dispatch) => {
-  axios.post(`${host}:8080/create_room`, { addingPeople, roomName, email })
-    .then((res) => {
-      if (res.data.isCreated === true) {
-        dispatch(getRoomsList(email));
+export const createRoom = (addingPeople, roomName, email, privateRoom) => (dispatch) => {
+  axios.post(`${host}:8080/create_room`, {
+    addingPeople, roomName, email, privateRoom,
+  }).then((res) => {
+    if (res.data.isCreated === true) {
+      dispatch(getRoomsList(email));
+
+      if (!privateRoom) {
         dispatch(roomCreated(true));
-      } else {
-        dispatch(createError('The name already used, create another name.'));
       }
-    }).catch(err => console.log(err));
+    } else {
+      dispatch(createError('The name already used, create another name.'));
+    }
+  }).catch(err => console.log(err));
 };
 
 export const sendUserDetails = details => (dispatch) => {

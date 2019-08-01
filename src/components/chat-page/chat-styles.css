@@ -19,8 +19,7 @@
   width: 75%;
   padding: 0 40px;
   position: relative;
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-color: #e1e6e2;
   border-right: 1px solid black;
   overflow-y: scroll;
 }
@@ -40,14 +39,20 @@
 }
 
 .message {
-  width: 40%;
+  min-width: 40%;
+  max-width: 85%;
+  width: max-content;
   border: 1px solid #000;
-  padding: 20px;
+  padding: 10px 20px 5px;
   margin: 10px;
   background-color: #5e646b;
   color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 4px 2px #969696fc;
+}
+
+.message article {
+  border-bottom: 1px solid #00000029;
 }
 
 .your-message {
@@ -69,8 +74,14 @@
   background: linear-gradient(90deg, #e4e4e4 0%, #ffffff 100%);
 }
 
+.clients-and-rooms-container::-webkit-scrollbar {
+  width: 0;
+}
+
 .clients-and-rooms-container {
   width: 25%;
+  height: 100%;
+  overflow-y: scroll;
 }
 
 .clients-list {
@@ -124,20 +135,41 @@
   position: absolute;
   right: 40px;
   text-align: center;
+  font-weight: bold;
   background: #cbcbcb;
-  background: radial-gradient(circle, #cbcbcb 25%, #5e646b 100%);
+  background: radial-gradient(circle, #ffaeae 25%, #be0b0b 100%);
   color: #000;
 }
 
-/* .tabs-link {
-    display: block;
-    color: #5e646b;
-    text-align: center;
-     text-decoration: none;
-     padding: 5px 0;
-} */
+@media screen and (max-width: 680px) {
+  .message {
+    padding: 0 5px;
+  }
 
-/* .tabs-link:hover {
-    text-decoration: none;
-    color: #aa4242;
-} */
+  .message span {
+    font-size: 10px;
+  }
+
+  .input-mess-container {
+    height: 55px;
+    padding: 10px;
+  }
+
+  .tabs {
+    font-size: 10px;
+  }
+
+  .users-list li {
+    font-size: 10px;
+  }
+
+  .chat-container {
+    position: fixed;
+    padding: 0;
+  }
+
+  .clients-and-rooms-container {
+    position: fixed;
+    right: 0;
+  }
+}

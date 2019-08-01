@@ -12,7 +12,7 @@
     padding: 0.5rem 1rem;
 }
 
-.userEmail {
+.user-email {
     color: #fff;
     padding-right: 10px; 
 }
@@ -36,4 +36,10 @@
 
 .form-check {
     border-bottom: 1px solid #4242423d;
+}
+
+@media screen and (max-width: 680px) {
+    .user-email {
+        display: none;
+    }
 }

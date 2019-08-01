@@ -4,7 +4,7 @@ import React from 'react';
 export default function SignOutButton({ email, signOut }) {
   return (
     <React.Fragment>
-      <span className="userEmail">{email}</span>
+      <span className="user-email">{email}</span>
       <div
         className="btn btn-outline-success my-2 my-sm-0"
         role="button"

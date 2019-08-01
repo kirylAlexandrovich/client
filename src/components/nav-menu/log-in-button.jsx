@@ -2,7 +2,9 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { connect } from 'react-redux';
-import { changeConnState, setEmail } from '../redux/actions';
+import {
+  changeConnState, setEmail, changeRoomsList, renderClientsList,
+} from '../redux/actions';
 import SignOutButton from './sign-out-button';
 import LinkToLogIn from './link-to-login';
 import ModalCreateRoom from './modal-dialog';
@@ -12,6 +14,8 @@ class LogInButton extends React.Component {
     this.props.setEmail(false);
     this.props.changeConnState(false);
     sessionStorage.setItem('connState', false);
+    this.props.changeRoomsList([]);
+    this.props.renderClientsList([]);
   }
 
   componentDidMount = () => {
@@ -43,4 +47,6 @@ export default connect(state => ({
   email: state.user.email,
   clientsList: state.lists.clientsList,
 }),
-{ changeConnState, setEmail })(LogInButton);
+{
+  changeConnState, setEmail, changeRoomsList, renderClientsList,
+})(LogInButton);

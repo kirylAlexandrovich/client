@@ -19,7 +19,7 @@ export default function ChatPage({ history }) {
 
   checkConnectionState();
   return (
-    <div className="chat-page-container">
+    <div className="chat-page-container" style={{ height: window.innerHeight }}>
       <Chat key={Chat.id} />
       <ClientsAndRooms />
       <InputMessage />
